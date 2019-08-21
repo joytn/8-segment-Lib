@@ -1,0 +1,73 @@
+//pin setting
+#define Dig1 5//
+#define Dig2 4
+#define Dig3 3
+#define Dig4 2
+#define A A2       //  
+#define B A4       //  |--a--|
+#define C A5       //  f     b
+#define D 7        //  |--g--|
+#define E 13       //  e     c
+#define F A3       //  |--d--|  .DP
+#define G A1       //
+#define DP 6       //
+char sigemets[8]={A,B,C,D,E,F,G,DP};
+void setup() {
+// set pin mode
+//pinMode(Dig1,OUTPUT);// off that because 1st segment probablu broken
+//digitalWrite(Dig1,HIGH);
+pinMode(Dig2,OUTPUT);
+pinMode(Dig3,OUTPUT);
+pinMode(Dig4,OUTPUT);
+pinMode(A,OUTPUT);
+pinMode(B,OUTPUT);
+pinMode(C,OUTPUT);
+pinMode(D,OUTPUT);
+pinMode(E,OUTPUT);
+pinMode(F,OUTPUT);
+pinMode(G,OUTPUT);
+pinMode(DP,OUTPUT);
+}
+
+
+void loop() 
+  { 
+    for(int s=0;s<=999;s++)
+      {
+      setsimbol(s);
+      delay(100);
+      };
+  };
+ //prepare data for light
+void setsimbol(int num)
+{     
+ light(num%10,Dig4);
+ 
+ light(num%100/10,Dig3);
+
+ light(num/100,Dig2);
+   
+} 
+//light chosen num 
+void light(int i,int t)
+{ 
+  //simbols library 0-9
+ boolean numbers[10][8]={
+ {1,1,1,1,1,1,0,0}, //0
+ {0,1,1,0,0,0,0,0}, //1
+ {1,1,0,1,1,0,1,0}, //2
+ {1,1,1,1,0,0,1,0}, //3
+ {0,1,1,0,0,1,1,0}, //4
+ {1,0,1,1,0,1,1,0}, //5
+ {1,0,1,1,1,1,1,0}, //6
+ {1,1,1,0,0,0,0,0}, //7
+ {1,1,1,1,1,1,1,0}, //8
+ {1,1,1,1,0,1,1,0}};//9
+   digitalWrite(t,HIGH);  
+   for(int s=0;s<8;s++)
+     {   
+     digitalWrite(sigemets[s],numbers[i][s]);        
+     };
+   delay(1);
+   digitalWrite(t,LOW); 
+}
